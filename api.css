@@ -1,0 +1,260 @@
+/**********************
+*                     *
+*   RCL Buttons API   *
+*                     *
+***********************
+*/
+
+
+/* фикс правила .recall-button i + span в style.css - оттуда это правило удалить и тогда удалим и тут этот фикс-сброс */
+.recall-button i + span {
+	margin: 0;
+}
+/* END */
+
+
+/* убрать .recall-button перед релизом */
+
+/* Общий стиль */
+body a.rcl-bttn {
+    align-items: center;
+    border: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 12px;        /* start size for em */
+    font-weight: normal;
+    letter-spacing: normal;
+    line-height: 1em;
+    outline: 0;
+    padding: 0;
+    position: relative;
+    text-decoration: none;
+    text-transform: none;
+	white-space: nowrap;
+    
+    -webkit-transition: opacity .1s ease,color .1s ease;
+    transition: opacity .1s ease,color .1s ease;
+    
+	-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+	user-select: none;
+}
+/* END общий стиль */
+
+/* пересекающие стили для 2х кнопок: simple и recall-button */
+body .rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__fullwidth) {
+	margin: 0 .25em .25em 0;
+}
+body .rcl-wrap.rcl-wrap__vertical .rcl-bttn,
+body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
+	margin-right: 0;
+}
+.rcl-bttn:not(.rcl-bttn__type-clear) .rcl-bttn__text,
+.rcl-bttn:not(.rcl-bttn__type-clear) .rcl-bttn__ico-left {
+    padding: .6em .8em;
+}
+.rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__ico-mask) .rcl-bttn__text + .rcl-bttn__ico,
+.rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__ico-mask) .rcl-bttn__ico + .rcl-bttn__text,
+.rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__ico-mask) .rcl-bttn__ico + .rcl-bttn__count {
+	padding: 0 .8em 0 0;
+}
+.rcl-bttn:not(.rcl-bttn__type-clear) .rcl-bttn__text + .rcl-bttn__count {
+	align-self: flex-start;
+	font-size: .85em;
+	margin: .5em .5em 0 -.3em;
+}
+.rcl-bttn__ava img {
+	float: none;
+	height: auto;
+	border: 0;
+	max-width: 100%;
+	border-radius: 0;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+.rcl-bttn:not(.rcl-bttn__type-clear) .rcl-bttn__ava + .rcl-bttn__count {
+	padding: 0 .8em;
+}
+/* END пересекающие стили для 2х кнопок: simple и recall-button */
+
+/* стиль recall-button */
+.rcl-bttn.recall-button {
+    color: #fff;
+}
+/* END recall-button */
+
+/* стиль clear */
+:not(.rcl-wrap__wiget) > .rcl-bttn.rcl-bttn__type-clear {
+	margin: 0 1em 0 0;
+}
+.rcl-bttn__type-clear .rcl-bttn__text + .rcl-bttn__count,
+.rcl-bttn__type-clear i + span,
+.rcl-bttn__type-clear span + i {
+	padding: 0 0 0 .45em;
+}
+/* END clear */
+
+/* стиль simple */
+.rcl-bttn.rcl-bttn__type-simple {
+	background-color: #f5f5f5;
+	box-shadow: 0 0 1px 1px #e5e5e5 inset;
+}
+.rcl-bttn.rcl-bttn__type-simple:hover {
+    background-color: #fff;
+	box-shadow: 0 0 1px 1px #d5d5d5 inset;
+}
+/* END simple */
+
+/* loader spinner */
+.rcl-bttn.recall-button.rcl-bttn__loading {
+	cursor: default;
+	color: transparent !important;
+	opacity: 1;
+	pointer-events: none;
+}
+.rcl-bttn__loading .rcl-bttn__ava img {
+	opacity: 0;
+}
+.rcl-bttn.recall-button.rcl-bttn__loading::before,
+.rcl-bttn.recall-button.rcl-bttn__loading::after {
+	position: absolute;
+	content: "";
+	top: 50%;
+	left: 50%;
+	width: 1.4em;
+	height: 1.4em;
+    border-radius: 50%;
+    margin: -.7em;
+	border-style: solid;
+	border-width: .2em;
+}
+.rcl-bttn.recall-button.rcl-bttn__loading::before {
+	border-color: rgba(0,0,0,.15);
+}
+.rcl-bttn.recall-button.rcl-bttn__loading::after {
+	-webkit-animation: rcl-bttn-loader .8s linear;
+	        animation: rcl-bttn-loader .8s linear;
+	-webkit-animation-iteration-count: infinite;
+	        animation-iteration-count: infinite;
+	border-color: #fff transparent transparent;
+    transform:rotate(0);
+}
+@-webkit-keyframes rcl-bttn-loader {
+ to {
+  -webkit-transform:rotate(360deg);
+  transform:rotate(360deg)
+ }
+}
+@keyframes rcl-bttn-loader {
+ to {
+  -webkit-transform:rotate(360deg);
+  transform:rotate(360deg)
+ }
+}
+/* END loader spinner */
+
+/********************
+*                   *
+*   Modificators    *
+*                   *
+*********************
+*/
+
+/* sizes */
+.rcl-bttn.rcl-bttn__size-standart {
+	font-size: 12px;
+}
+.rcl-bttn.rcl-bttn__size-medium {
+	font-size: 14px;
+}
+.rcl-bttn.rcl-bttn__size-large {
+	font-size: 16px;
+}
+.rcl-bttn.rcl-bttn__size-big {
+	font-size: 18px;
+}
+.rcl-bttn__type-clear.rcl-bttn__mod-only-icon.rcl-bttn__size-medium {
+	font-size: 16px;
+}
+.rcl-bttn__type-clear.rcl-bttn__mod-only-icon.rcl-bttn__size-large {
+	font-size: 20px;
+}
+.rcl-bttn__type-clear.rcl-bttn__mod-only-icon.rcl-bttn__size-big {
+	font-size: 24px;
+}
+/* END sizes */
+
+/* fullwidth */
+.rcl-bttn.rcl-bttn__fullwidth:not(.rcl-bttn__type-clear) {
+	display: block;
+	text-align: center;
+	width: 100%;
+	margin: 0;
+}
+/* END fullwidth */
+
+/* masked icon */
+.rcl-bttn.rcl-bttn__ico-mask .fa,
+.rcl-bttn__ico-mask.rcl-bttn__mod-text-rico-count .rcl-bttn__count {
+	background-color: rgba(0,0,0,.1);
+}
+.rcl-bttn__ico-mask.rcl-bttn__mod-text-rico .rcl-bttn__ico-right,
+.rcl-bttn__ico-mask.rcl-bttn__mod-text-rico-count .rcl-bttn__count {
+	padding: .6em .8em;
+}
+.rcl-bttn__ico-mask.rcl-bttn__mod-text-rico-count .rcl-bttn__ico.rcl-bttn__ico-right {
+	padding: .6em 0 .6em .8em;
+}
+/* END masked icon */
+
+/* wrappers */
+.rcl-wrap {
+	display: flex;
+    flex-wrap: wrap;
+	width: 100%;
+    justify-content: flex-start;
+}
+.rcl-wrap.rcl-wrap__right {
+	justify-content: flex-end;
+}
+.rcl-wrap.rcl-wrap__vertical {
+	flex-direction: column;
+	align-items: flex-start;
+}
+.rcl-wrap.rcl-wrap__right.rcl-wrap__vertical {
+	align-content: flex-end;
+}
+/* END wrappers */
+
+/* special wiget list style */
+.rcl-wrap__wiget {
+	flex-direction: column;
+}
+.rcl-wrap__wiget .rcl-bttn__type-clear {
+	padding: .45em .6em;
+}
+.rcl-wrap__wiget .rcl-bttn__type-clear:hover {
+	background-color: rgba(237, 237, 237, 0.6);
+}
+.rcl-wrap__wiget .rcl-bttn__ava {
+	flex-shrink: 0;
+}
+.rcl-wrap__wiget .rcl-bttn__text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+}
+.rcl-wrap__wiget .rcl-bttn__text {
+	margin-left: 10px;
+}
+.rcl-wrap__wiget .rcl-bttn__ava_circle .rcl-bttn__ava img {
+	border-radius: 50%;
+}
+/* END special wiget list style */
+
+
