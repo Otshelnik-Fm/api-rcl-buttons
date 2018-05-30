@@ -20,6 +20,7 @@ body a.rcl-bttn {
     align-items: center;
     border-radius: 0;
     border: 0;
+    box-shadow: none;
     box-sizing: border-box;
     cursor: pointer;
     display: inline-flex;
@@ -43,6 +44,7 @@ body a.rcl-bttn {
 	    user-select: none;
 }
 body :not(.rcl-wrap__wiget) > a.rcl-bttn:hover {
+    box-shadow: none;
     opacity: 0.8;
 }
 /* END общий стиль */
@@ -69,9 +71,10 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
     font-size: .85em;
     margin: .5em .5em 0 -.3em;
 }
-.rcl-bttn__ava img {
+.rcl-bttn .rcl-bttn__ava img {
     border-radius: 0;
     border: 0;
+    box-shadow: none;
     display: block;
     float: none;
     height: auto;
@@ -191,6 +194,7 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
 }
 .rcl-wrap__wiget .rcl-bttn__type-clear:hover {
     background-color: rgba(237, 237, 237, 0.6);
+    box-shadow: none;
 }
 .rcl-wrap__wiget .rcl-bttn__ava {
     flex-shrink: 0;
@@ -229,6 +233,7 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
     border-radius: 50%;
     border-style: solid;
     border-width: .2em;
+    box-sizing: border-box;
     content: "";
     height: 1.4em;
     left: 50%;
