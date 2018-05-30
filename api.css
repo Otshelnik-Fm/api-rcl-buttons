@@ -42,6 +42,9 @@ body a.rcl-bttn {
         -ms-user-select: none;
 	    user-select: none;
 }
+body :not(.rcl-wrap__wiget) > a.rcl-bttn:hover {
+    opacity: 0.8;
+}
 /* END общий стиль */
 
 /* пересекающие стили для 2х кнопок: simple и recall-button */
@@ -104,58 +107,10 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
     box-shadow: 0 0 1px 1px #e5e5e5 inset;
 }
 .rcl-bttn.rcl-bttn__type-simple:hover {
-    background-color: #fff;
-    box-shadow: 0 0 1px 1px #d5d5d5 inset;
+    background-color: #fafafa;
 }
 /* END simple */
 
-/* loader spinner */
-.rcl-bttn.recall-button.rcl-bttn__loading {
-    color: transparent !important;
-    cursor: default;
-    opacity: 1;
-    pointer-events: none;
-}
-.rcl-bttn__loading .rcl-bttn__ava img {
-    opacity: 0;
-}
-.rcl-bttn.recall-button.rcl-bttn__loading::before,
-.rcl-bttn.recall-button.rcl-bttn__loading::after {
-    border-radius: 50%;
-    border-style: solid;
-    border-width: .2em;
-    content: "";
-    height: 1.4em;
-    left: 50%;
-    margin: -.7em;
-    position: absolute;
-    top: 50%;
-    width: 1.4em;
-}
-.rcl-bttn.recall-button.rcl-bttn__loading::before {
-    border-color: rgba(0,0,0,.15);
-}
-.rcl-bttn.recall-button.rcl-bttn__loading::after {
-    -webkit-animation: rcl-bttn-loader .8s linear;
-            animation: rcl-bttn-loader .8s linear;
-    -webkit-animation-iteration-count: infinite;
-            animation-iteration-count: infinite;
-    border-color: #fff transparent transparent;
-    transform: rotate(0deg);
-}
-@-webkit-keyframes rcl-bttn-loader {
-    to {
-        -webkit-transform:rotate(360deg);
-                transform:rotate(360deg)
-    }
-}
-@keyframes rcl-bttn-loader {
-    to {
-        -webkit-transform:rotate(360deg);
-                transform:rotate(360deg)
-    }
-}
-/* END loader spinner */
 
 /********************
     Modificators
@@ -253,5 +208,67 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
     border-radius: 50%;
 }
 /* END special wiget list style */
+
+
+/********************
+    conditions
+*********************/
+
+/* loader */
+.rcl-bttn.rcl-bttn__loading {
+    color: transparent !important;
+    cursor: default;
+    opacity: 1;
+    pointer-events: none;
+}
+.rcl-bttn__loading .rcl-bttn__ava img {
+    opacity: 0;
+}
+.rcl-bttn.rcl-bttn__loading::before,
+.rcl-bttn.rcl-bttn__loading::after {
+    border-radius: 50%;
+    border-style: solid;
+    border-width: .2em;
+    content: "";
+    height: 1.4em;
+    left: 50%;
+    margin: -.7em;
+    position: absolute;
+    top: 50%;
+    width: 1.4em;
+}
+.rcl-bttn.rcl-bttn__loading::before {
+    border-color: rgba(0,0,0,.15);
+}
+.rcl-bttn.rcl-bttn__loading::after {
+    -webkit-animation: rcl-bttn-loader .8s linear;
+            animation: rcl-bttn-loader .8s linear;
+    -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+    border-color: #fff transparent transparent;
+    transform: rotate(0deg);
+}
+@-webkit-keyframes rcl-bttn-loader {
+    to {
+        -webkit-transform:rotate(360deg);
+                transform:rotate(360deg)
+    }
+}
+@keyframes rcl-bttn-loader {
+    to {
+        -webkit-transform:rotate(360deg);
+                transform:rotate(360deg)
+    }
+}
+/* END loader */
+
+
+.rcl-bttn.rcl-bttn__disabled {
+    background-color: transparent;
+    box-shadow: none;
+    pointer-events: none;
+}
+
+
 
 
