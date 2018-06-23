@@ -3,20 +3,14 @@
 *   RCL Buttons API   *
 *                     *
 ***********************
+rcl-bttn__type-clear    - примитивная
+rcl-bttn__type-simple   - простая
+rcl-bttn__type-primary  - реколл-цвет
 */
 
 
-/* фикс правила .recall-button i + span в style.css - оттуда это правило удалить и тогда удалим и тут этот фикс-сброс */
-.recall-button i + span {
-    margin: 0;
-}
-/* END */
-
-
-/* убрать .recall-button перед релизом */
-
 /* Общий стиль */
-body a.rcl-bttn {
+body .rcl-bttn {
     align-items: center;
     border-radius: 0;
     border: 0;
@@ -43,13 +37,12 @@ body a.rcl-bttn {
         -ms-user-select: none;
 	    user-select: none;
 }
-body :not(.rcl-wrap__wiget) > a.rcl-bttn:hover {
-    box-shadow: none;
+body :not(.rcl-wrap__wiget) > .rcl-bttn:not(.rcl-bttn__active):hover {
     opacity: 0.8;
 }
 /* END общий стиль */
 
-/* пересекающие стили для 2х кнопок: simple и recall-button */
+/* пересекающие стили для 2х кнопок: rcl-bttn__type-simple и rcl-bttn__type-primary */
 body .rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__fullwidth) {
     margin: 0 .25em .25em 0;
 }
@@ -85,13 +78,13 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
 .rcl-bttn:not(.rcl-bttn__type-clear) .rcl-bttn__ava + .rcl-bttn__count {
     padding: 0 .8em;
 }
-/* END пересекающие стили для 2х кнопок: simple и recall-button */
+/* END пересекающие стили для 2х кнопок: rcl-bttn__type-simple и rcl-bttn__type-primary */
 
-/* стиль recall-button */
-.rcl-bttn.recall-button {
+/* стиль rcl-bttn__type-primary */
+.rcl-bttn.rcl-bttn__type-primary {
     color: #fff;
 }
-/* END recall-button */
+/* END rcl-bttn__type-primary */
 
 /* стиль clear */
 :not(.rcl-wrap__wiget) > .rcl-bttn.rcl-bttn__type-clear {
@@ -107,7 +100,7 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
 /* стиль simple */
 .rcl-bttn.rcl-bttn__type-simple {
     background-color: #f5f5f5;
-    box-shadow: 0 0 1px 1px #e5e5e5 inset;
+    box-shadow: 0 0 0 1px #e5e5e5 inset;
 }
 .rcl-bttn.rcl-bttn__type-simple:hover {
     background-color: #fafafa;
@@ -206,7 +199,7 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
     width: 100%;
 }
 .rcl-wrap__wiget .rcl-bttn__text {
-    margin-left: 10px;
+    margin-left: .3em;
 }
 .rcl-wrap__wiget .rcl-bttn__ava_circle .rcl-bttn__ava img {
     border-radius: 50%;
@@ -254,26 +247,30 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
     transform: rotate(0deg);
 }
 @-webkit-keyframes rcl-bttn-loader {
-    to {
-        -webkit-transform:rotate(360deg);
-                transform:rotate(360deg)
+    to {-webkit-transform:rotate(360deg);
+                transform:rotate(360deg);
     }
 }
 @keyframes rcl-bttn-loader {
-    to {
-        -webkit-transform:rotate(360deg);
-                transform:rotate(360deg)
+    to {-webkit-transform:rotate(360deg);
+                transform:rotate(360deg);
     }
 }
 /* END loader */
 
-
+/* condition */
 .rcl-bttn.rcl-bttn__disabled {
-    background-color: transparent;
-    box-shadow: none;
+    opacity: .6;
     pointer-events: none;
 }
-
-
-
-
+.rcl-bttn.rcl-bttn__type-simple.rcl-bttn__disabled {
+    background-color: transparent;
+    box-shadow: none;
+}
+.rcl-bttn.rcl-bttn__active {
+    pointer-events: none;
+}
+.rcl-bttn.rcl-bttn__type-primary.rcl-bttn__active {
+    color: #333;
+}
+/* END condition */

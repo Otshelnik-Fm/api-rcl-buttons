@@ -23,7 +23,7 @@ function new_rcl_get_button($bttn_text=false,$url,$args=false){
 /**
 $args['id']
 $args['class']  // свой доп класс
-$args['type']   // recall-button | rcl-bttn__type-clear - тип кнопки - залита цветом или простая
+$args['type']   // rcl-bttn__type-primary | rcl-bttn__type-clear - тип кнопки - залита цветом или простая
 $args['attr']
 $args['title']  // тайтл
 
@@ -51,7 +51,7 @@ else if ( empty($bttn_text) && array_key_exists('icon', $args) && empty($args['c
     $dop_class = 'rcl-bttn__mod-only-icon';
 }
 
-    $type = (isset($args['type']))? $args['type']: 'recall-button';
+    $type = (isset($args['type']))? $args['type']: 'rcl-bttn__type-primary';
     $class = (isset($args['class']))? $args['class']: '';
 
     $button = '<a href="'.$url.'"';
@@ -86,9 +86,9 @@ else if ( empty($bttn_text) && array_key_exists('icon', $args) && empty($args['c
 
 // Пример всех кнопок
 function all_buttons1(){
-    echo '<h5>Тип кнопки "recall-button" - без модификаторов</h5>';
+    echo '<h5>Тип кнопки "rcl-bttn__type-primary" - без модификаторов</h5>';
 
-    echo '"recall-button" - это кнопка с фоновым цветом. Реколл цвет, что задается в админке<br>';
+    echo '"rcl-bttn__type-primary" - это кнопка с фоновым цветом. Реколл цвет, что задается в админке<br>';
     echo 'Здесь собраны все существующие виды кнопок. Размер дефолтный. Никаких модификаторов:<br/>';
 
 echo '<hr style="margin: 12px 0;">';
@@ -1134,30 +1134,119 @@ echo '<hr style="margin: 12px 0;">';
     echo new_rcl_get_button($bttn_text='23',$url=false,$args);
 
 
+echo '<hr style="margin: 12px 0;">';
+
+    echo '<h5>Active:</h5>';
+
+    echo 'Добавьте в агрумент класса <strong>rcl-bttn__active</strong>: $args["class"] = "rcl-bttn__active"<br>';
+    echo '1-я кнопка обычная. Вторая активная.<br><br>';
+
+    $args['class'] = '';
+    $args['type'] = 'rcl-bttn__type-clear';
+    $args['icon'] = 'fa-plane';
+    echo new_rcl_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
+
+    $args['class'] = 'rcl-bttn__active';
+    $args['icon'] = 'fa-plane';
+    echo new_rcl_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
+  echo '<br><br>';
+
+
+    $args['type'] = ''; // значит rcl-bttn__type-primary
+    $args['class'] = 'rcl-bttn__size-big';
+    $args['icon'] = 'fa-star-o';
+    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+
+    $args['class'] = 'rcl-bttn__size-big rcl-bttn__active';
+    $args['icon'] = 'fa-star-o';
+    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+  echo '<br><br>';
+
+
+    $args['class'] = 'rcl-bttn__size-medium';
+    $args['type'] = 'rcl-bttn__type-simple';
+    $args['icon'] = 'fa-car';
+    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+
+    $args['class'] = 'rcl-bttn__size-medium rcl-bttn__active';
+    $args['icon'] = 'fa-car';
+    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+  echo '<br><br>';
+
+
+    $args['class'] = 'rcl-bttn__size-large';
+    $args['type'] = '';
+    $args['icon'] = 'fa-car';
+    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+
+    $args['class'] = 'rcl-bttn__size-large rcl-bttn__active';
+    $args['icon'] = 'fa-car';
+    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+  echo '<br><br>';
+
+
+    $args['class'] = 'rcl-bttn__ico-mask';
+    $args['icon'] = '';
+    $args['count'] = '36';
+    $args['ricon'] = 'fa-arrow-down';
+    echo new_rcl_get_button($bttn_text='Скачать',$url=false,$args);
+
+    $args['class'] = 'rcl-bttn__ico-mask rcl-bttn__active';
+    $args['count'] = '249';
+    $args['ricon'] = 'fa-long-arrow-right';
+    echo new_rcl_get_button($bttn_text='Перейти',$url=false,$args);
+
+echo '<br/><br/>';
+
+    echo '<strong>Пагинация:</strong><br/>';
+
+    $args['ricon'] = '';
+    $args['count'] = '';
+    $args['icon'] = '';
+    $args['type'] = 'rcl-bttn__type-simple';
+    $args['class'] = 'rcl-bttn__size-large';
+
+    echo new_rcl_get_button($bttn_text='1',$url=false,$args);
+
+    $args['class'] = 'rcl-bttn__size-large rcl-bttn__active';
+    echo new_rcl_get_button($bttn_text='2',$url=false,$args);
+
+    $args['class'] = 'rcl-bttn__size-large';
+    echo new_rcl_get_button($bttn_text='3',$url=false,$args);
+
+    $args['class'] = 'rcl-bttn__size-large rcl-bttn__disabled';
+    echo new_rcl_get_button($bttn_text='...',$url=false,$args);
+
+    $args['class'] = 'rcl-bttn__size-large';
+    echo new_rcl_get_button($bttn_text='22',$url=false,$args);
+    echo new_rcl_get_button($bttn_text='23',$url=false,$args);
+
+echo '<hr style="margin: 12px 0;">';
+echo '<hr style="margin: 12px 0;">';
+echo '<hr style="margin: 12px 0;">';
 }
 add_action('rcl_area_before','vdss_state_button');
 
 
 
 
-
-
-
-
-
-
-
 // доп стиль для кнопок simple
-//add_filter('rcl_inline_styles','all_buttons_simple_color',10,2);
-function all_buttons_simple_color($styles,$rgb){
+add_filter('rcl_inline_styles','vdss_buttons_primary',10,2);
+function vdss_buttons_primary($styles,$rgb){
     list($r, $g, $b) = $rgb;
 
-$styles .= "
-.rcl-bttn.rcl-bttn__type-simple {
-    border-color: rgb($r, $g, $b);
-    color: rgb($r, $g, $b);
-}
-";
+
+$styles .= '
+    .rcl-bttn.rcl-bttn__type-primary {
+        background-color: rgb('.$r.', '.$g.', '.$b.');
+    }
+    .rcl-bttn.rcl-bttn__type-primary.rcl-bttn__active {
+        background-color: rgba('.$r.', '.$g.', '.$b.', 0.4);
+    }
+    .rcl-bttn.rcl-bttn__type-simple.rcl-bttn__active {
+        box-shadow: 0px -5px 0px -3px rgb('.$r.', '.$g.', '.$b.') inset;
+    }
+';
 
     return $styles;
 }

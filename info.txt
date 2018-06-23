@@ -1,5 +1,5 @@
 Name: API RCL-Buttons;
-Version: 0.1;
+Version: 0.2;
 Support Core: 16.11.0;
 Description: Новое API кнопок;
 Author: Владимир Дружаев (Otshelnik-Fm);
