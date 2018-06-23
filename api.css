@@ -138,10 +138,8 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
 
 /* fullwidth */
 .rcl-bttn.rcl-bttn__fullwidth:not(.rcl-bttn__type-clear) {
-    display: block;
-    margin: 0;
-    text-align: center;
-    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 /* END fullwidth */
 
