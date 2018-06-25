@@ -25,7 +25,7 @@ body .rcl-bttn {
     outline: 0;
     padding: 0;
     position: relative;
-    text-decoration: none;
+    text-decoration: none !important;
     text-transform: none;
     white-space: nowrap;
     
