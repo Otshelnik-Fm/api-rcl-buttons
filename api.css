@@ -18,7 +18,7 @@ body .rcl-bttn {
     box-sizing: border-box;
     cursor: pointer;
     display: inline-flex;
-    font-size: 12px;        /* start size for em */
+/*    font-size: 12px;         start size for em - идёт инлайном. т.к. задается через кастомайзер */
     font-weight: normal;
     letter-spacing: normal;
     line-height: 1em;
@@ -80,11 +80,6 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
 }
 /* END пересекающие стили для 2х кнопок: rcl-bttn__type-simple и rcl-bttn__type-primary */
 
-/* стиль rcl-bttn__type-primary */
-.rcl-bttn.rcl-bttn__type-primary {
-    color: #fff;
-}
-/* END rcl-bttn__type-primary */
 
 /* стиль clear */
 :not(.rcl-wrap__wiget) > .rcl-bttn.rcl-bttn__type-clear {
@@ -111,30 +106,6 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
 /********************
     Modificators
 *********************/
-
-/* sizes */
-.rcl-bttn.rcl-bttn__size-standart {
-    font-size: 12px;
-}
-.rcl-bttn.rcl-bttn__size-medium {
-    font-size: 14px;
-}
-.rcl-bttn.rcl-bttn__size-large {
-    font-size: 16px;
-}
-.rcl-bttn.rcl-bttn__size-big {
-    font-size: 18px;
-}
-.rcl-bttn__type-clear.rcl-bttn__mod-only-icon.rcl-bttn__size-medium {
-    font-size: 16px;
-}
-.rcl-bttn__type-clear.rcl-bttn__mod-only-icon.rcl-bttn__size-large {
-    font-size: 20px;
-}
-.rcl-bttn__type-clear.rcl-bttn__mod-only-icon.rcl-bttn__size-big {
-    font-size: 24px;
-}
-/* END sizes */
 
 /* fullwidth */
 .rcl-bttn.rcl-bttn__fullwidth:not(.rcl-bttn__type-clear) {

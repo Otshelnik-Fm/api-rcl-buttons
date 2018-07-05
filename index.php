@@ -1230,27 +1230,5 @@ add_action('rcl_area_before','vdss_state_button');
 
 
 
-// доп стиль для кнопок simple
-add_filter('rcl_inline_styles','vdss_buttons_primary',10,2);
-function vdss_buttons_primary($styles,$rgb){
-    list($r, $g, $b) = $rgb;
-
-
-$styles .= '
-    .rcl-bttn.rcl-bttn__type-primary {
-        background-color: rgb('.$r.', '.$g.', '.$b.');
-    }
-    .rcl-bttn.rcl-bttn__type-primary.rcl-bttn__active {
-        background-color: rgba('.$r.', '.$g.', '.$b.', 0.4);
-    }
-    .rcl-bttn.rcl-bttn__type-simple.rcl-bttn__active {
-        box-shadow: 0px -5px 0px -3px rgb('.$r.', '.$g.', '.$b.') inset;
-    }
-';
-
-    return $styles;
-}
-
-
 
 
