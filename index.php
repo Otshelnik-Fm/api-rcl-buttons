@@ -32,8 +32,12 @@ $args['ava']    // <img alt='' src='...
 $args['count']  // 12
 $args['ricon']  // иконка справа
 */
+if(is_array($args)){
+    $args = array_filter($args); // unset $args[key] = '';
+} else {
+    $args = array();
+}
 
-$args = array_filter($args); // unset $args[key] = '';
 
 $dop_class = ''; // доп классы для возможности стилизации кнопки в зависимости от ее состава
 if( isset($bttn_text) && array_key_exists('ricon', $args) && empty($args['count']) ){ // кнопка из текста и только иконки справа
