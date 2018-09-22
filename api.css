@@ -28,10 +28,10 @@ body .rcl-bttn {
     text-decoration: none !important;
     text-transform: none;
     white-space: nowrap;
-    
+
     -webkit-transition: opacity .1s ease,color .1s ease;
             transition: opacity .1s ease,color .1s ease;
-    
+
     -webkit-user-select: none;
        -moz-user-select: none;
         -ms-user-select: none;
@@ -41,6 +41,21 @@ body :not(.rcl-wrap__wiget) > .rcl-bttn:not(.rcl-bttn__active):hover {
     opacity: 0.8;
 }
 /* END общий стиль */
+
+.rcl-bttn .rcl-bttn__ico {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.uspic-icon {
+    display: inline-block;
+    fill: currentColor;
+    height: 1.15em;
+    stroke-width: 0;
+    stroke: currentColor;
+    width: 1.15em;
+}
+
 
 /* пересекающие стили для 2х кнопок: rcl-bttn__type-simple и rcl-bttn__type-primary */
 body .rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__fullwidth) {
@@ -52,12 +67,12 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
 }
 .rcl-bttn:not(.rcl-bttn__type-clear) .rcl-bttn__text,
 .rcl-bttn:not(.rcl-bttn__type-clear) .rcl-bttn__ico-left {
-    padding: .6em .8em;
+    padding: .5em .7em;
 }
 .rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__ico-mask) .rcl-bttn__text + .rcl-bttn__ico,
 .rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__ico-mask) .rcl-bttn__ico + .rcl-bttn__text,
 .rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__ico-mask) .rcl-bttn__ico + .rcl-bttn__count {
-    padding: 0 .8em 0 0;
+    padding: 0 .7em 0 0;
 }
 .rcl-bttn:not(.rcl-bttn__type-clear) .rcl-bttn__text + .rcl-bttn__count {
     align-self: flex-start;
@@ -76,7 +91,7 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
     padding: 0;
 }
 .rcl-bttn:not(.rcl-bttn__type-clear) .rcl-bttn__ava + .rcl-bttn__count {
-    padding: 0 .8em;
+    padding: 0 .7em;
 }
 /* END пересекающие стили для 2х кнопок: rcl-bttn__type-simple и rcl-bttn__type-primary */
 
@@ -115,16 +130,16 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
 /* END fullwidth */
 
 /* masked icon */
-.rcl-bttn.rcl-bttn__ico-mask .fa,
+.rcl-bttn.rcl-bttn__ico-mask .rcl-bttn__ico,
 .rcl-bttn__ico-mask.rcl-bttn__mod-text-rico-count .rcl-bttn__count {
     background-color: rgba(0,0,0,.1);
 }
 .rcl-bttn__ico-mask.rcl-bttn__mod-text-rico .rcl-bttn__ico-right,
 .rcl-bttn__ico-mask.rcl-bttn__mod-text-rico-count .rcl-bttn__count {
-    padding: .6em .8em;
+    padding: .5em .7em;
 }
 .rcl-bttn__ico-mask.rcl-bttn__mod-text-rico-count .rcl-bttn__ico.rcl-bttn__ico-right {
-    padding: .6em 0 .6em .8em;
+    padding: .5em 0 .5em .7em;
 }
 /* END masked icon */
 
@@ -243,3 +258,69 @@ body .rcl-bttn:not(.rcl-bttn__type-clear):last-child {
     color: #333;
 }
 /* END condition */
+
+
+
+
+
+
+/* Это не апи кнопок, а фиксы к особенностям иконок с icomoon.io */
+.uspic-plus_square,
+.uspic-minus_square,
+.uspic-trash_o,
+.uspic-trash_s {
+  width: 0.7857142857142857em;
+}
+.uspic-mall_basket,
+.uspic-address_card {
+  width: 1.1428571428571428em;
+}
+.uspic-euro_sign {
+  width: 0.75em;
+}
+.uspic-ruble_sign {
+  width: 0.724609375em;
+}
+.uspic-rouble {
+  width: 0.7142857142857142em;
+}
+.uspic-dollar {
+  width: 0.5697857142857142em;
+}
+.uspic-euro {
+  width: 0.5664285714285714em;
+}
+.uspic-gbp {
+  width: 0.5692142857142857em;
+}
+.uspic-rupee {
+  width: 0.5011428571428571em;
+}
+.uspic-yen {
+  width: 0.5730714285714286em;
+}
+.uspic-bitcoin {
+  width: 0.7422142857142857em;
+}
+.uspic-cc_mastercard,
+.uspic-handshake,
+.uspic-cc_paypal,
+.uspic-cc_visa {
+  width: 1.2857142857142856em;
+}
+.uspic-at,
+.uspic-copyright,
+.uspic-thumbs_up,
+.uspic-thumbs_down {
+  width: 0.8571428571428571em;
+}
+.uspic-multiline_code {
+  width: 1.25em;
+}
+.uspic-thumbs_down_bold,
+.uspic-thumbs_up_bold {
+  width: 0.8928571428571428em;
+}
+.uspic-chat {
+    width: 0.999em;
+}

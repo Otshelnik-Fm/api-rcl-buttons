@@ -1,6 +1,14 @@
 <?php
 
 /*
+Plugin Name:    api-rcl-buttons
+Description:    api кнопок
+Version:        0.6
+Author:         Otshelnik-Fm (Wladimir Druzhaev)
+Author URI:     https://otshelnik-fm.ru/
+*/
+
+/*
 
 ╔═╗╔╦╗╔═╗╔╦╗
 ║ ║ ║ ╠╣ ║║║ https://otshelnik-fm.ru
@@ -8,18 +16,39 @@
 
 */
 
+// разместите кнопки на странице шорткодом [apib_get_button]
 
 
-function api_load_resource() {
-    rcl_enqueue_style('api_style',rcl_addon_url('api.css', __FILE__));
+// svg compressor https://jakearchibald.github.io/svgomg/ 304kb in / 255kb out
+
+// style & svg
+function apib_load_resource() {
+    wp_enqueue_style(
+        'apib_style',
+        plugins_url('api.css', __FILE__)
+    );
+
+    wp_enqueue_script(
+        'apib_script',
+        plugins_url('assets/svg/icons.js', __FILE__)
+    );
 }
-add_action('rcl_enqueue_scripts','api_load_resource',10);
+add_action('wp_enqueue_scripts','apib_load_resource',10);
 
 
 
 
-// новая функция сбора кнопок
-function new_rcl_get_button($bttn_text=false,$url,$args=false){
+// шорткод
+function apib_short(){
+    return do_action('apib_button');
+}
+add_shortcode('apib_get_button', 'apib_short');
+
+
+
+
+// внутри кнопок svg
+function svg_get_button($bttn_text=false,$url,$args=false){
 /**
 $args['id']
 $args['class']  // свой доп класс
@@ -27,7 +56,7 @@ $args['type']   // rcl-bttn__type-primary | rcl-bttn__type-clear - тип кно
 $args['attr']
 $args['title']  // тайтл
 
-$args['icon']   // fa-hashtag
+$args['icon']   // uspic-heart_broken
 $args['ava']    // <img alt='' src='...
 $args['count']  // 12
 $args['ricon']  // иконка справа
@@ -67,13 +96,13 @@ else if ( empty($bttn_text) && array_key_exists('icon', $args) && empty($args['c
 
         if(isset($args['title'])&&$args['title']) $button .= ' title="'.$args['title'].'"';
     $button .= '>';
-        if(isset($args['icon'])&&$args['icon']) $button .= '<i class="rcl-bttn__ico rcl-bttn__ico-left fa '.$args['icon'].'" aria-hidden="true"></i>';
+        if(isset($args['icon'])&&$args['icon']) $button .= '<i class="rcl-bttn__ico rcl-bttn__ico-left"><svg class="uspic-icon '.$args['icon'].'"><use xlink:href="#'.$args['icon'].'"></use></svg></i>';
 
         if(isset($args['ava'])&&$args['ava']) $button .= '<i class="rcl-bttn__ava">'.$args['ava'].'</i>';
 
         if($bttn_text) $button .= '<span class="rcl-bttn__text">'.$bttn_text.'</span>';
 
-        if(isset($args['ricon'])&&$args['ricon']) $button .= '<i class="rcl-bttn__ico rcl-bttn__ico-right fa '.$args['ricon'].'" aria-hidden="true"></i>';
+        if(isset($args['ricon'])&&$args['ricon']) $button .= '<i class="rcl-bttn__ico rcl-bttn__ico-right"><svg class="uspic-icon '.$args['ricon'].'"><use xlink:href="#'.$args['ricon'].'"></use></svg></i>';
 
         if(isset($args['count'])&&$args['count']) $button .= '<span class="rcl-bttn__count">'.$args['count'].'</span>';
 
@@ -82,6 +111,7 @@ else if ( empty($bttn_text) && array_key_exists('icon', $args) && empty($args['c
 
     return $button;
 }
+
 
 
 
@@ -98,122 +128,122 @@ function all_buttons1(){
 echo '<hr style="margin: 12px 0;">';
 
     echo '<strong>иконка:</strong><br/>';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-portrait';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - счётчик:</strong><br/>';
-    $args['icon'] = 'fa-heartbeat';
+    $args['icon'] = 'uspic-favorite_border';
     $args['count'] = '31';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
+    $args['icon'] = 'uspic-car';
     $args['count'] = '2';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
+    $args['icon'] = 'uspic-flight';
     $args['count'] = '156';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - текст:</strong><br/>';
     $args['count'] = '';
-    $args['icon'] = 'fa-clone';
+    $args['icon'] = 'uspic-edit_copy';
     $args['title'] = 'Перейти в кабинет';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
+    $args['icon'] = 'uspic-car';
     $args['title'] = '';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - текст - счётчики:</strong><br/>';
     $args['count'] = '12';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '99';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '652';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 
 echo '<hr style="margin: 12px 0;">';
 
     echo '<strong>текст:</strong><br/>';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args=false);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args=false);
 
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args=false);
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args=false);
 
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args=false);
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args=false);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>текст - счётчик:</strong><br/>';
     $args['count'] = '31';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '421';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '7';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - текст:</strong><br/>';
     $args['count'] = '';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>текст - иконка справа:<br/></strong>';
     $args['icon'] = '';
-    $args['ricon'] = 'fa-long-arrow-right';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_forward';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['ricon'] = 'fa-arrow-down';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_downward';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['ricon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['ricon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>текст - иконка справа - счётчик:<br/></strong>';
     $args['count'] = '2398';
-    $args['ricon'] = 'fa-star-o';
-    echo new_rcl_get_button($bttn_text='Рейтинг',$url=false,$args);
+    $args['ricon'] = 'uspic-star_border';
+    echo svg_get_button($bttn_text='Рейтинг',$url=false,$args);
 
     $args['count'] = '74';
-    $args['ricon'] = 'fa-comment-o';
-    echo new_rcl_get_button($bttn_text='Комментариев',$url=false,$args);
+    $args['ricon'] = 'uspic-chat';
+    echo svg_get_button($bttn_text='Комментариев',$url=false,$args);
 
     $args['count'] = '21';
-    $args['ricon'] = 'fa-handshake-o';
-    echo new_rcl_get_button($bttn_text='Друзей',$url=false,$args);
+    $args['ricon'] = 'uspic-handshake';
+    echo svg_get_button($bttn_text='Друзей',$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 
@@ -222,26 +252,26 @@ echo '<hr style="margin: 12px 0;">';
     $args['count'] = '';
     $args['ricon'] = '';
     $args['ava'] = get_avatar(1, 26);
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['ava'] = get_avatar(3, 26);
     $args['count'] = '7';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['ava'] = get_avatar(2, 26);
     $args['count'] = '71';
     $args['title'] = 'Перейти в кабинет Надежда';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
     $args['ava'] = get_avatar(108, 26);
     $args['count'] = '';
     $args['title'] = '';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 
 }
-add_action('rcl_area_before','all_buttons1');
+add_action('apib_button','all_buttons1');
 
 
 
@@ -261,59 +291,59 @@ echo '<hr style="margin: 12px 0;">';
 
     echo '<strong>иконка:</strong><br/>';
     $args['type'] = 'rcl-bttn__type-simple';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - счётчик:</strong><br/>';
-    $args['icon'] = 'fa-heartbeat';
+    $args['icon'] = 'uspic-favorite_border';
     $args['count'] = '31';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
+    $args['icon'] = 'uspic-car';
     $args['count'] = '2';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
+    $args['icon'] = 'uspic-flight';
     $args['count'] = '156';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - текст:</strong><br/>';
     $args['count'] = '';
-    $args['icon'] = 'fa-clone';
+    $args['icon'] = 'uspic-edit_copy';
     $args['title'] = 'Перейти в кабинет';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
+    $args['icon'] = 'uspic-car';
     $args['title'] = '';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - текст - счётчики:</strong><br/>';
     $args['count'] = '12';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '99';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '652';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 
 echo '<hr style="margin: 12px 0;">';
@@ -323,75 +353,75 @@ echo '<hr style="margin: 12px 0;">';
     $args['count'] = '';
     $args['icon'] = '';
     $args['type'] = 'rcl-bttn__type-simple';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>Пагинация (тоже текст):</strong><br/>';
 
-    echo new_rcl_get_button($bttn_text='1',$url=false,$args);
-    echo new_rcl_get_button($bttn_text='2',$url=false,$args);
-    echo new_rcl_get_button($bttn_text='3',$url=false,$args);
-    echo new_rcl_get_button($bttn_text='...',$url=false,$args);
-    echo new_rcl_get_button($bttn_text='22',$url=false,$args);
-    echo new_rcl_get_button($bttn_text='23',$url=false,$args);
+    echo svg_get_button($bttn_text='1',$url=false,$args);
+    echo svg_get_button($bttn_text='2',$url=false,$args);
+    echo svg_get_button($bttn_text='3',$url=false,$args);
+    echo svg_get_button($bttn_text='...',$url=false,$args);
+    echo svg_get_button($bttn_text='22',$url=false,$args);
+    echo svg_get_button($bttn_text='23',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>текст - счётчик:</strong><br/>';
     $args['count'] = '31';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '421';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '7';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - текст:</strong><br/>';
     $args['count'] = '';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>текст - иконка справа:<br/></strong>';
     $args['icon'] = '';
-    $args['ricon'] = 'fa-long-arrow-right';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_forward';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['ricon'] = 'fa-arrow-down';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_downward';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['ricon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['ricon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>текст - иконка справа - счётчик:<br/></strong>';
     $args['count'] = '2398';
-    $args['ricon'] = 'fa-star-o';
-    echo new_rcl_get_button($bttn_text='Рейтинг',$url=false,$args);
+    $args['ricon'] = 'uspic-star_border';
+    echo svg_get_button($bttn_text='Рейтинг',$url=false,$args);
 
     $args['count'] = '74';
-    $args['ricon'] = 'fa-comment-o';
-    echo new_rcl_get_button($bttn_text='Комментариев',$url=false,$args);
+    $args['ricon'] = 'uspic-chat';
+    echo svg_get_button($bttn_text='Комментариев',$url=false,$args);
 
     $args['count'] = '21';
-    $args['ricon'] = 'fa-handshake-o';
-    echo new_rcl_get_button($bttn_text='Друзей',$url=false,$args);
+    $args['ricon'] = 'uspic-handshake';
+    echo svg_get_button($bttn_text='Друзей',$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 
@@ -400,26 +430,26 @@ echo '<hr style="margin: 12px 0;">';
     $args['count'] = '';
     $args['ricon'] = '';
     $args['ava'] = get_avatar(1, 26);
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['ava'] = get_avatar(3, 26);
     $args['count'] = '7';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['ava'] = get_avatar(2, 26);
     $args['count'] = '71';
     $args['title'] = 'Перейти в кабинет Надежда';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
     $args['ava'] = get_avatar(108, 26);
     $args['count'] = '';
     $args['title'] = '';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 
 }
-add_action('rcl_area_before','all_buttons_simple');
+add_action('apib_button','all_buttons_simple');
 
 
 
@@ -439,59 +469,59 @@ echo '<hr style="margin: 12px 0;">';
 
     echo '<strong>иконка:</strong><br/>';
     $args['type'] = 'rcl-bttn__type-clear';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - счётчик:</strong><br/>';
-    $args['icon'] = 'fa-heartbeat';
+    $args['icon'] = 'uspic-favorite_border';
     $args['count'] = '31';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
+    $args['icon'] = 'uspic-car';
     $args['count'] = '2';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
+    $args['icon'] = 'uspic-flight';
     $args['count'] = '156';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - текст:</strong><br/>';
     $args['count'] = '';
-    $args['icon'] = 'fa-clone';
+    $args['icon'] = 'uspic-edit_copy';
     $args['title'] = 'Перейти в кабинет';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
+    $args['icon'] = 'uspic-car';
     $args['title'] = '';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - текст - счётчики:</strong><br/>';
     $args['count'] = '12';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '99';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '652';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 
 echo '<hr style="margin: 12px 0;">';
@@ -501,64 +531,64 @@ echo '<hr style="margin: 12px 0;">';
     $args['count'] = '';
     $args['icon'] = '';
     $args['type'] = 'rcl-bttn__type-clear';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>текст - счётчик:</strong><br/>';
     $args['count'] = '31';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '421';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '7';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>иконка - текст:</strong><br/>';
     $args['count'] = '';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>текст - иконка справа:<br/></strong>';
     $args['icon'] = '';
-    $args['ricon'] = 'fa-long-arrow-right';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_forward';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['ricon'] = 'fa-arrow-down';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_downward';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['ricon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['ricon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<div style="margin: 12px 0;"></div>';
 
     echo '<strong>текст - иконка справа - счётчик:<br/></strong>';
     $args['count'] = '2398';
-    $args['ricon'] = 'fa-star-o';
-    echo new_rcl_get_button($bttn_text='Рейтинг',$url=false,$args);
+    $args['ricon'] = 'uspic-star_border';
+    echo svg_get_button($bttn_text='Рейтинг',$url=false,$args);
 
     $args['count'] = '74';
-    $args['ricon'] = 'fa-comment-o';
-    echo new_rcl_get_button($bttn_text='Комментариев',$url=false,$args);
+    $args['ricon'] = 'uspic-chat';
+    echo svg_get_button($bttn_text='Комментариев',$url=false,$args);
 
     $args['count'] = '21';
-    $args['ricon'] = 'fa-handshake-o';
-    echo new_rcl_get_button($bttn_text='Друзей',$url=false,$args);
+    $args['ricon'] = 'uspic-handshake';
+    echo svg_get_button($bttn_text='Друзей',$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 
@@ -567,28 +597,28 @@ echo '<hr style="margin: 12px 0;">';
     $args['count'] = '';
     $args['ricon'] = '';
     $args['ava'] = get_avatar(1, 26);
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['ava'] = get_avatar(3, 26);
     $args['count'] = '7';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['ava'] = get_avatar(2, 26);
     $args['count'] = '71';
     $args['title'] = 'Перейти в кабинет Надежда';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
     $args['ava'] = get_avatar(108, 26);
     $args['count'] = '';
     $args['title'] = '';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 echo '<hr style="margin: 12px 0;">';
 echo '<hr style="margin: 12px 0;">';
 
 }
-add_action('rcl_area_before','all_buttons_clear');
+add_action('apib_button','all_buttons_clear');
 
 
 
@@ -603,156 +633,156 @@ echo '<br/>';
     echo 'Если нет класса - то это равносильно rcl-bttn__size-standart.<br/>';
     echo '<strong>без доп класса | rcl-bttn__size-medium | rcl-bttn__size-large | rcl-bttn__size-big:</strong><br/>';
 
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 
     $args['class'] = 'rcl-bttn__size-medium';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 
     $args['class'] = 'rcl-bttn__size-large';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 
     $args['class'] = 'rcl-bttn__size-big';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 
     $args['class'] = '';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<br/><br/>';
 
     $args['class'] = 'rcl-bttn__size-medium';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<br/><br/>';
 
     $args['class'] = 'rcl-bttn__size-large';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<br/><br/>';
 
     $args['class'] = 'rcl-bttn__size-big';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 
     $args['type'] = 'rcl-bttn__type-clear';
     $args['class'] = '';
     $args['count'] = '12';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '99';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '652';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<br/><br/>';
 
     $args['class'] = 'rcl-bttn__size-medium';
     $args['count'] = '12';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '99';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '652';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<br/><br/>';
 
     $args['class'] = 'rcl-bttn__size-large';
     $args['count'] = '12';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '99';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '652';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<br/><br/>';
 
     $args['class'] = 'rcl-bttn__size-big';
     $args['count'] = '12';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '99';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '652';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<br/><br/>';
 
@@ -761,27 +791,27 @@ echo '<hr style="margin: 12px 0;">';
 
     $args['count'] = '';
     $args['class'] = 'rcl-bttn__size-standart';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
   echo '<br/><br/>';
 
     $args['class'] = 'rcl-bttn__size-medium';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
   echo '<br/><br/>';
 
     $args['class'] = 'rcl-bttn__size-large';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
   echo '<br/><br/>';
 
     $args['class'] = 'rcl-bttn__size-big';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 }
-add_action('rcl_area_before','vdss_button_sizes');
+add_action('apib_button','vdss_button_sizes');
 
 
 
@@ -791,13 +821,13 @@ function vdss_button_fullwidth(){
     echo '<h5>Полная ширина:</h5>';
     echo 'Указание <strong>rcl-bttn__fullwidth</strong><br>';
 
-    $args['icon'] = 'fa-hashtag';
+    $args['icon'] = 'uspic-portrait';
     $args['class'] = 'rcl-bttn__fullwidth';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 }
-add_action('rcl_area_before','vdss_button_fullwidth');
+add_action('apib_button','vdss_button_fullwidth');
 
 
 
@@ -809,14 +839,14 @@ function vdss_button_mask(){
     echo 'класс: <strong>rcl-bttn__ico-mask</strong> и rcl-bttn__size-medium<br/>';
 
     $args['class'] = 'rcl-bttn__size-medium rcl-bttn__ico-mask';
-    $args['icon'] = 'fa-heartbeat';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-favorite_border';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<br/><br/>';
 
@@ -824,13 +854,13 @@ echo '<br/><br/>';
 echo '<br/>';
     // текст - иконка справа
     $args['icon'] = '';
-    $args['ricon'] = 'fa-arrow-down';
+    $args['ricon'] = 'uspic-arrow_downward';
     $args['title'] = 'Скачать файл';
-    echo new_rcl_get_button($bttn_text='Скачать',$url=false,$args);
+    echo svg_get_button($bttn_text='Скачать',$url=false,$args);
 
-    $args['ricon'] = 'fa-long-arrow-right';
+    $args['ricon'] = 'uspic-arrow_forward';
     $args['title'] = 'Нажмите чтобы продолжить';
-    echo new_rcl_get_button($bttn_text='Перейти',$url=false,$args);
+    echo svg_get_button($bttn_text='Перейти',$url=false,$args);
 
 echo '<br/><br/>';
 
@@ -838,28 +868,28 @@ echo '<br/><br/>';
     $args['title'] = '';
     $args['ricon'] = '';
     $args['count'] = '12';
-    $args['icon'] = 'fa-clone';
-    echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+    $args['icon'] = 'uspic-edit_copy';
+    echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
     $args['count'] = '99';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['count'] = '652';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
 echo '<br/><br/>';
 
     echo '<strong>текст, иконка - счётчики (группируются):</strong><br/>';
     $args['icon'] = '';
     $args['count'] = '36';
-    $args['ricon'] = 'fa-arrow-down';
-    echo new_rcl_get_button($bttn_text='Скачать',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_downward';
+    echo svg_get_button($bttn_text='Скачать',$url=false,$args);
 
     $args['count'] = '249';
-    $args['ricon'] = 'fa-long-arrow-right';
-    echo new_rcl_get_button($bttn_text='Перейти',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_forward';
+    echo svg_get_button($bttn_text='Перейти',$url=false,$args);
 
 echo '<br/><br/>';
 
@@ -867,7 +897,7 @@ echo '<hr style="margin: 12px 0;">';
 echo '<hr style="margin: 12px 0;">';
 echo '<hr style="margin: 12px 0;">';
 }
-add_action('rcl_area_before','vdss_button_mask');
+add_action('apib_button','vdss_button_mask');
 
 
 
@@ -885,8 +915,8 @@ function vdss_button_wrappers(){
     echo '<br><strong>Пример:</strong><br>';
 
      echo 'какой-то текст и мы решили вставить просто кнопку ';
-        $args['icon'] = 'fa-clone';
-        echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+        $args['icon'] = 'uspic-edit_copy';
+        echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
   echo '<div style="margin: 12px 0;"></div>';
 
@@ -894,8 +924,8 @@ function vdss_button_wrappers(){
 
     echo 'какой-то текст и мы решили вставить просто кнопку ';
         echo '<div class="rcl-wrap">';
-        $args['icon'] = 'fa-star-o';
-        echo new_rcl_get_button($bttn_text='Рейтинг',$url=false,$args);
+        $args['icon'] = 'uspic-star_border';
+        echo svg_get_button($bttn_text='Рейтинг',$url=false,$args);
     echo '</div>';
 
   echo '<div style="margin: 12px 0;"></div>';
@@ -927,8 +957,8 @@ echo '<hr style="margin: 12px 0;">';
 </pre>';
 
     echo '<div class="rcl-wrap rcl-wrap__right">';
-        $args['icon'] = 'fa-clone';
-        echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+        $args['icon'] = 'uspic-edit_copy';
+        echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
     echo '</div>';
 
 echo '<hr style="margin: 12px 0;">';
@@ -945,18 +975,18 @@ echo '<hr style="margin: 12px 0;">';
 
     echo '<div class="rcl-wrap rcl-wrap__right">';
         $args['icon'] = '';
-        echo new_rcl_get_button($bttn_text='В кабинет',$url=false,$args);
+        echo svg_get_button($bttn_text='В кабинет',$url=false,$args);
 
-        $args['icon'] = 'fa-car';
-        echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+        $args['icon'] = 'uspic-car';
+        echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
         $args['icon'] = '';
-        $args['ricon'] = 'fa-plane';
-        echo new_rcl_get_button($bttn_text='Подобрать билет',$url=false,$args);
+        $args['ricon'] = 'uspic-flight';
+        echo svg_get_button($bttn_text='Подобрать билет',$url=false,$args);
 
         $args['ricon'] = '';
-        $args['icon'] = 'fa-star-o';
-        echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+        $args['icon'] = 'uspic-star_border';
+        echo svg_get_button($bttn_text=false,$url=false,$args);
     echo '</div>';
 
 echo '<hr style="margin: 12px 0;">';
@@ -973,14 +1003,14 @@ echo '<hr style="margin: 12px 0;">';
 </pre>';
 
     echo '<div class="rcl-wrap rcl-wrap__right rcl-wrap__vertical">';
-        $args['icon'] = 'fa-star-o';
-        echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+        $args['icon'] = 'uspic-star_border';
+        echo svg_get_button($bttn_text=false,$url=false,$args);
 
-        $args['icon'] = 'fa-car';
-        echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+        $args['icon'] = 'uspic-car';
+        echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-        $args['icon'] = 'fa-plane';
-        echo new_rcl_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
+        $args['icon'] = 'uspic-flight';
+        echo svg_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
     echo '</div>';
 
     echo '- в этом случае блок позиционируется справа, а кнопки выровнены по левому краю. Если надо их вывести на всю ширину или по центру (при расположении обертки справа и в вертикальном представлении кнопок конечно же) - пишите свои стили. т.к. в этом блоке могут быть разные типы кнопок (с иконками и без, текстовые или нет, ну и так далее) - тут тонко самостоятельно настраивайте под свои задачи.';
@@ -999,14 +1029,14 @@ echo '<hr style="margin: 12px 0;">';
 </pre>';
 
     echo '<div class="rcl-wrap rcl-wrap__vertical">';
-        $args['icon'] = 'fa-star-o';
-        echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+        $args['icon'] = 'uspic-star_border';
+        echo svg_get_button($bttn_text=false,$url=false,$args);
 
-        $args['icon'] = 'fa-car';
-        echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+        $args['icon'] = 'uspic-car';
+        echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
-        $args['icon'] = 'fa-plane';
-        echo new_rcl_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
+        $args['icon'] = 'uspic-flight';
+        echo svg_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
     echo '</div>';
 
 echo '<hr style="margin: 12px 0;">';
@@ -1026,7 +1056,7 @@ $args['icon'] = '';
     $args["type"] = "rcl-bttn__type-clear";
     $args["ava"] = get_avatar(1, 26);
     $args["count"] = "3";
-    echo new_rcl_get_button($bttn_text="Otshelnik-Fm",$url=false,$args);
+    echo svg_get_button($bttn_text="Otshelnik-Fm",$url=false,$args);
   ?&gt;
     ...
 &lt;/div&gt;
@@ -1037,19 +1067,19 @@ $args['icon'] = '';
         $args['type'] = 'rcl-bttn__type-clear';
         $args['ava'] = get_avatar(1, 26);
         $args['count'] = '3';
-        echo new_rcl_get_button($bttn_text='Otshelnik-Fm',$url=false,$args);
+        echo svg_get_button($bttn_text='Otshelnik-Fm',$url=false,$args);
 
         $args['ava'] = get_avatar(3, 26);
         $args['count'] = '87';
-        echo new_rcl_get_button($bttn_text='Надежда Великолепная',$url=false,$args);
+        echo svg_get_button($bttn_text='Надежда Великолепная',$url=false,$args);
 
         $args['ava'] = get_avatar(2, 26);
         $args['count'] = '';
-        echo new_rcl_get_button($bttn_text='Путешественник во времени',$url=false,$args);
+        echo svg_get_button($bttn_text='Путешественник во времени',$url=false,$args);
 
         $args['ava'] = get_avatar(108, 26);
         $args['count'] = '71';
-        echo new_rcl_get_button($bttn_text='Андрей Плечёв',$url=false,$args);
+        echo svg_get_button($bttn_text='Андрей Плечёв',$url=false,$args);
     echo '</div>';
 
 echo '<hr style="margin: 12px 0;">';
@@ -1067,26 +1097,26 @@ echo '
         $args['type'] = 'rcl-bttn__type-clear';
         $args['ava'] = get_avatar(1, 26);
         $args['count'] = '3';
-        echo new_rcl_get_button($bttn_text='Otshelnik-Fm',$url=false,$args);
+        echo svg_get_button($bttn_text='Otshelnik-Fm',$url=false,$args);
 
         $args['ava'] = get_avatar(3, 26);
         $args['count'] = '87';
-        echo new_rcl_get_button($bttn_text='Надежда Великолепная',$url=false,$args);
+        echo svg_get_button($bttn_text='Надежда Великолепная',$url=false,$args);
 
         $args['ava'] = get_avatar(2, 26);
         $args['count'] = '';
-        echo new_rcl_get_button($bttn_text='Путешественник во времени',$url=false,$args);
+        echo svg_get_button($bttn_text='Путешественник во времени',$url=false,$args);
 
         $args['ava'] = get_avatar(108, 26);
         $args['count'] = '71';
-        echo new_rcl_get_button($bttn_text='Андрей Плечёв',$url=false,$args);
+        echo svg_get_button($bttn_text='Андрей Плечёв',$url=false,$args);
     echo '</div>';
 
 echo '<hr style="margin: 12px 0;">';
 echo '<hr style="margin: 12px 0;">';
 echo '<hr style="margin: 12px 0;">';
 }
-add_action('rcl_area_before','vdss_button_wrappers');
+add_action('apib_button','vdss_button_wrappers');
 
 
 
@@ -1102,18 +1132,18 @@ echo '<hr style="margin: 12px 0;">';
 
     $args['type'] = 'rcl-bttn__type-clear';
     $args['class'] = 'rcl-bttn__loading';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
 
     $args['type'] = '';
     $args['class'] = 'rcl-bttn__size-big rcl-bttn__loading';
-    $args['icon'] = 'fa-star-o';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-star_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
     $args['type'] = 'rcl-bttn__type-simple';
     $args['class'] = 'rcl-bttn__size-medium rcl-bttn__loading';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
 $args['icon'] = '';
 echo '<hr style="margin: 12px 0;">';
@@ -1126,16 +1156,16 @@ echo '<hr style="margin: 12px 0;">';
 
     $args['class'] = 'rcl-bttn__size-large';
 
-    echo new_rcl_get_button($bttn_text='1',$url=false,$args);
-    echo new_rcl_get_button($bttn_text='2',$url=false,$args);
-    echo new_rcl_get_button($bttn_text='3',$url=false,$args);
+    echo svg_get_button($bttn_text='1',$url=false,$args);
+    echo svg_get_button($bttn_text='2',$url=false,$args);
+    echo svg_get_button($bttn_text='3',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__size-large rcl-bttn__disabled';
-    echo new_rcl_get_button($bttn_text='...',$url=false,$args);
+    echo svg_get_button($bttn_text='...',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__size-large';
-    echo new_rcl_get_button($bttn_text='22',$url=false,$args);
-    echo new_rcl_get_button($bttn_text='23',$url=false,$args);
+    echo svg_get_button($bttn_text='22',$url=false,$args);
+    echo svg_get_button($bttn_text='23',$url=false,$args);
 
 
 echo '<hr style="margin: 12px 0;">';
@@ -1147,58 +1177,58 @@ echo '<hr style="margin: 12px 0;">';
 
     $args['class'] = '';
     $args['type'] = 'rcl-bttn__type-clear';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__active';
-    $args['icon'] = 'fa-plane';
-    echo new_rcl_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
+    $args['icon'] = 'uspic-flight';
+    echo svg_get_button($bttn_text='Подобрать билет на май',$url=false,$args);
   echo '<br><br>';
 
 
     $args['type'] = ''; // значит rcl-bttn__type-primary
     $args['class'] = 'rcl-bttn__size-big';
-    $args['icon'] = 'fa-star-o';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-star_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
 
     $args['class'] = 'rcl-bttn__size-big rcl-bttn__active';
-    $args['icon'] = 'fa-star-o';
-    echo new_rcl_get_button($bttn_text=false,$url=false,$args);
+    $args['icon'] = 'uspic-star_border';
+    echo svg_get_button($bttn_text=false,$url=false,$args);
   echo '<br><br>';
 
 
     $args['class'] = 'rcl-bttn__size-medium';
     $args['type'] = 'rcl-bttn__type-simple';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__size-medium rcl-bttn__active';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
   echo '<br><br>';
 
 
     $args['class'] = 'rcl-bttn__size-large';
     $args['type'] = '';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__size-large rcl-bttn__active';
-    $args['icon'] = 'fa-car';
-    echo new_rcl_get_button($bttn_text='Подобрать авто',$url=false,$args);
+    $args['icon'] = 'uspic-car';
+    echo svg_get_button($bttn_text='Подобрать авто',$url=false,$args);
   echo '<br><br>';
 
 
     $args['class'] = 'rcl-bttn__ico-mask';
     $args['icon'] = '';
     $args['count'] = '36';
-    $args['ricon'] = 'fa-arrow-down';
-    echo new_rcl_get_button($bttn_text='Скачать',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_downward';
+    echo svg_get_button($bttn_text='Скачать',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__ico-mask rcl-bttn__active';
     $args['count'] = '249';
-    $args['ricon'] = 'fa-long-arrow-right';
-    echo new_rcl_get_button($bttn_text='Перейти',$url=false,$args);
+    $args['ricon'] = 'uspic-arrow_forward';
+    echo svg_get_button($bttn_text='Перейти',$url=false,$args);
 
 echo '<br/><br/>';
 
@@ -1210,26 +1240,26 @@ echo '<br/><br/>';
     $args['type'] = 'rcl-bttn__type-simple';
     $args['class'] = 'rcl-bttn__size-large';
 
-    echo new_rcl_get_button($bttn_text='1',$url=false,$args);
+    echo svg_get_button($bttn_text='1',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__size-large rcl-bttn__active';
-    echo new_rcl_get_button($bttn_text='2',$url=false,$args);
+    echo svg_get_button($bttn_text='2',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__size-large';
-    echo new_rcl_get_button($bttn_text='3',$url=false,$args);
+    echo svg_get_button($bttn_text='3',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__size-large rcl-bttn__disabled';
-    echo new_rcl_get_button($bttn_text='...',$url=false,$args);
+    echo svg_get_button($bttn_text='...',$url=false,$args);
 
     $args['class'] = 'rcl-bttn__size-large';
-    echo new_rcl_get_button($bttn_text='22',$url=false,$args);
-    echo new_rcl_get_button($bttn_text='23',$url=false,$args);
+    echo svg_get_button($bttn_text='22',$url=false,$args);
+    echo svg_get_button($bttn_text='23',$url=false,$args);
 
 echo '<hr style="margin: 12px 0;">';
 echo '<hr style="margin: 12px 0;">';
 echo '<hr style="margin: 12px 0;">';
 }
-add_action('rcl_area_before','vdss_state_button');
+add_action('apib_button','vdss_state_button');
 
 
 

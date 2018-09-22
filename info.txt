@@ -1,7 +1,0 @@
-Name: API RCL-Buttons;
-Version: 0.5;
-Support Core: 16.11.0;
-Description: Новое API кнопок;
-Author: Владимир Дружаев (Otshelnik-Fm);
-Author URI: https://otshelnik-fm.ru/;
-Add-on URI: https://codeseller.ru/products/;
