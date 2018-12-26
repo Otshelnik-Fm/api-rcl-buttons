@@ -42,21 +42,6 @@ body :not(.rcl-wrap__wiget) > .rcl-bttn:not(.rcl-bttn__active):hover {
 }
 /* END общий стиль */
 
-.rcl-bttn .rcl-bttn__ico {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-}
-.uspic-icon {
-    display: inline-block;
-    fill: currentColor;
-    height: 1.15em;
-    stroke-width: 0;
-    stroke: currentColor;
-    width: 1.15em;
-}
-
-
 /* пересекающие стили для 2х кнопок: rcl-bttn__type-simple и rcl-bttn__type-primary */
 body .rcl-bttn:not(.rcl-bttn__type-clear):not(.rcl-bttn__fullwidth) {
     margin: 0 .25em .25em 0;
